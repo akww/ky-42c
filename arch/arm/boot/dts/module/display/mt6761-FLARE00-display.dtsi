@@ -1,0 +1,115 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&mtkfb {
+//	pinctrl-names = "state_lcm_vtp_output0", "state_lcm_vtp_output1",
+//		"state_lcm_vmipi_output0", "state_lcm_vmipi_output1", "state_lcm_bias_output0",
+//		"state_lcm_bias_output1", "state_lcm_rst_active", "state_lcm_rst_sleep",
+//		"state_lcm_id_active", "state_lcm_id_sleep";
+	pinctrl-names = "state_lcm_vmipi_output0", "state_lcm_vmipi_output1", "state_lcm_bias_output0",
+		"state_lcm_bias_output1", "state_lcm_rst_active", "state_lcm_rst_sleep",
+		"state_lcm_id_active", "state_lcm_id_sleep";
+//		"state_lcm_vtp_output0", "state_lcm_vtp_output1";
+	pinctrl-0 = <&ctp_pins_lcm_vmipi_output0>;
+	pinctrl-1 = <&ctp_pins_lcm_vmipi_output1>;
+	pinctrl-2 = <&ctp_pins_lcm_bias_output0>;
+	pinctrl-3 = <&ctp_pins_lcm_bias_output1>;
+	pinctrl-4 = <&state_lcm_rst_active>;
+	pinctrl-5 = <&state_lcm_rst_sleep>;
+	pinctrl-6 = <&state_lcm_id_active>;
+	pinctrl-7 = <&state_lcm_id_sleep>;
+//	pinctrl-8 = <&ctp_pins_lcm_vtp_output0>;
+//	pinctrl-9 = <&ctp_pins_lcm_vtp_output1>;
+	status = "okay";
+};
+
+&pio {
+	ctp_pins_lcm_vmipi_output0: lvmipioutput0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	ctp_pins_lcm_vmipi_output1: lvmipioutput1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	ctp_pins_lcm_bias_output0: lbiasoutput0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	ctp_pins_lcm_bias_output1: lbiasoutput1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	state_lcm_rst_active: lrstactive {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	state_lcm_rst_sleep: lrstsleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	state_lcm_id_active: lidactive {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO88__FUNC_GPIO88>;
+			slew-rate = <1>;
+			bias-pull-up;
+		};
+	};
+	state_lcm_id_sleep: lidsleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO88__FUNC_GPIO88>;
+			slew-rate = <1>;
+			bias-pull-down;
+		};
+	};
+//	ctp_pins_lcm_vtp_output0: lvtpoutput0 {
+//		pins_cmd_dat {
+//			pinmux = <PINMUX_GPIO170__FUNC_GPIO170>;
+//			slew-rate = <1>;
+//			output-low;
+//		};
+//	};
+//	ctp_pins_lcm_vtp_output1: lvtpoutput1 {
+//		pins_cmd_dat {
+//			pinmux = <PINMUX_GPIO170__FUNC_GPIO170>;
+//			slew-rate = <1>;
+//			output-high;
+//		};
+//	};
+};
+
+&odm {
+	kc_lcm: kc_lcm {
+		compatible = "kc,kc_lcm";
+//		kdisp,id_gpio = <&pio 88 0x0>;
+	};
+};

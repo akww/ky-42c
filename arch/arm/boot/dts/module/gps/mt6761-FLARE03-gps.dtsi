@@ -1,0 +1,49 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2019 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&pio {
+        consys_pins_default: consys_default {
+        };
+        gpslna_pins_init: gpslna@0 {
+                pins_cmd_dat {
+                        pinmux = <PINMUX_GPIO91__FUNC_GPIO91>;
+                        slew-rate = <0>;
+                        bias-disable;
+                        output-low;
+                };
+        };
+        gpslna_pins_oh: gpslna@1 {
+                pins_cmd_dat {
+                        pinmux = <PINMUX_GPIO91__FUNC_GPIO91>;
+                        slew-rate = <1>;
+                        output-high;
+                };
+        };
+        gpslna_pins_ol: gpslna@2 {
+                pins_cmd_dat {
+                        pinmux = <PINMUX_GPIO91__FUNC_GPIO91>;
+                        slew-rate = <1>;
+                        output-low;
+                };
+        };
+};
+&consys {
+        pinctrl-names = "default", "gps_lna_state_init",
+                "gps_lna_state_oh", "gps_lna_state_ol";
+        pinctrl-0 = <&consys_pins_default>;
+        pinctrl-1 = <&gpslna_pins_init>;
+        pinctrl-2 = <&gpslna_pins_oh>;
+        pinctrl-3 = <&gpslna_pins_ol>;
+        status = "okay";
+};

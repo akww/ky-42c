@@ -1,0 +1,37 @@
+# This software is contributed or developed by KYOCERA Corporation.
+# (C) 2022 KYOCERA Corporation
+#
+
+config DISP_EXT_SUB
+	bool "To enable the sub display"
+	default y
+	---help---
+	  Say Y here if you want to enable the sub display.
+config DISP_EXT_I2C
+	bool "To enable the i2c"
+	default y
+	---help---
+	  Say Y here if you want to enable the i2c.
+config DISP_EXT_SUB_ALWAYS_ON
+	bool "To enable the always_on"
+	default n
+	---help---
+	  Say Y here if you want to enable the always_on.
+config DISP_EXT_SUB_CONTRAST
+	bool "To enable the contrast"
+	default n
+	---help---
+	  Say Y here if you want to enable the contrast.
+config DISP_EXT_SUB_USER_CONTRAST
+	bool "To enable the contrast"
+	default n
+	---help---
+	  Say Y here if you want to enable the contrast.
+config DISP_EXT_SPI
+	bool "To enable the spi"
+	default y
+	---help---
+	The MDSS debugging provides support to enable display debugging
+	features to: Dump MDSS registers during driver errors, panic
+	driver during fatal errors and enable some display-driver logging
+	into an internal buffer (this avoids logging overhead).

@@ -1,0 +1,430 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2020 KYOCERA Corporation
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&odm {
+	wled {
+		compatible = "kc_wled";
+		kc,lcd-bl-drv-en-gpio = <&pio 111 0x00>;
+		label = "wled";
+	};
+
+	kc_leds: kc_leds {
+		compatible = "kc,kc_leds";
+		//blue_support;
+		mix_color;
+
+		//on_time + off_time <= 5
+		//ISKINK4
+		red_on_time = <1>;
+		red_off_time = <0>;
+		red_brightness = <2>;
+		//red_hcur_en;
+
+		//ISINK1
+		green_on_time = <1>;
+		green_off_time = <0>;
+		green_brightness = <1>;
+
+		//ISINK2
+		/*
+		blue_on_time = <1>;
+		blue_off_time = <2>;
+		blue_brightness = <1>;
+		*/
+
+		//RED + GREEN
+		RG_red_on_time = <1>;
+		RG_red_off_time = <0>;
+		RG_red_brightness = <1>;
+		RG_green_on_time = <1>;
+		RG_green_off_time = <0>;
+		RG_green_brightness = <1>;
+
+		//RED + BLUE
+		/*
+		RB_red_on_time = <1>;
+		RB_red_off_time = <4>;
+		RB_red_brightness = <2>;
+		RB_blue_on_time = <1>;
+		RB_blue_off_time = <4>;
+		RB_blue_brightness = <1>;
+
+		//GREEN + BLUE
+		GB_green_on_time = <1>;
+		GB_green_off_time = <4>;
+		GB_green_brightness = <1>;
+		GB_blue_on_time = <1>;
+		GB_blue_off_time = <4>;
+		GB_blue_brightness = <1>;
+
+		//RED + GREEN + BLUE
+		RGB_red_on_time = <1>;
+		RGB_red_off_time = <4>;
+		RGB_red_brightness = <2>;
+		RGB_green_on_time = <1>;
+		RGB_green_off_time = <4>;
+		RGB_green_brightness = <1>;
+		RGB_blue_on_time = <1>;
+		RGB_blue_off_time = <4>;
+		RGB_blue_brightness = <1>;
+		*/
+
+
+	};
+
+	led0:led@0 {
+		compatible = "mediatek,red";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led1:led@1 {
+		compatible = "mediatek,green";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led2:led@2 {
+		compatible = "mediatek,blue";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+		/*
+	led2:led@2 {
+		compatible = "mediatek,key-green";
+		led_mode = <2>;
+		data = <175>;
+		gpio_data = <&pio 175 0x0>;
+		pwm_config = <0 0 0 0 0>;
+	};
+*/
+	led3:led@3 {
+		compatible = "mediatek,key-white";
+		led_mode = <2>;
+		data = <176>;
+		gpio_data = <&pio 176 0x0>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led4:led@4 {
+		compatible = "mediatek,key-blue";
+		led_mode = <2>;
+		data = <177>;
+		gpio_data = <&pio 177 0x0>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led5:led@5 {
+		compatible = "mediatek,button-backlight";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led6:led@6 {
+		compatible = "mediatek,lcd-backlight";
+		led_mode = <5>;
+		data = <1>;
+		pwm_config = <0 3 0 0 0>;
+	};
+
+	kc_keylight {
+		status = "okay";
+		compatible = "kc,kc_keylight";
+		kc,name = "kc_keylight";
+		kc,power_gpio   = <&pio 174 0x00>;
+		kc,keyled_gpio  = <&pio 164 0x00>;
+		// kc,power_lcd = <&pio 88 0x00>;
+	};
+
+	kc_slcdbl {
+		status = "okay";
+		compatible = "kc,kc_slcdbl";
+		kc,name = "kc_slcdbl";
+		kc,slcdbl_cnt_gpio  = <&pio 88 0x00>;
+	};
+};
+
+&pio {
+	dev_check_pd: dev_check_pd {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO160__FUNC_GPIO160>;
+			slew-rate = <0>;
+			input-enable;
+			bias-pull-down; /*pull down*/
+		};
+	};
+	dev_check_np: dev_check_np {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO160__FUNC_GPIO160>;
+			slew-rate = <0>;
+            input-enable;
+			bias-disable; /*non pull*/
+		};
+	};
+	/*
+	kc_sw_i2c_sda {
+		kc_sw_i2c_sda_default: kc_sw_i2c_sda_default {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO104__FUNC_GPIO104>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-pull-down;
+				output-low;
+			};
+		};
+		kc_sw_i2c_sda_low: kc_sw_i2c_sda_low {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO104__FUNC_GPIO104>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-disable;
+				output-low;
+			};
+		};
+		kc_sw_i2c_sda_high: kc_sw_i2c_sda_high {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO104__FUNC_GPIO104>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-enable;
+				output-high;
+			};
+		};
+	};
+	kc_sw_i2c_scl {
+		kc_sw_i2c_scl_default: kc_sw_i2c_scl_default {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO103__FUNC_GPIO103>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-pull-down;
+				output-low;
+			};
+		};
+		kc_sw_i2c_scl_high: kc_sw_i2c_scl_high {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO103__FUNC_GPIO103>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-enable;
+				output-high;
+			};
+		};
+
+		kc_sw_i2c_scl_low: kc_sw_i2c_scl_low {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO103__FUNC_GPIO103>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-enable;
+				output-low;
+			};
+		};
+
+	};
+	*/
+
+	flashlight_rst {
+		flashlight_rst_default: flashlight_rst_default {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO163__FUNC_GPIO163>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-enable;
+				output-low;
+			};
+		};
+		flashlight_rst_active: flashlight_rst_active {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO163__FUNC_GPIO163>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				output-high;
+			};
+		};
+		flashlight_rst_sleep: flashlight_rst_sleep {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO163__FUNC_GPIO163>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-enable;
+				output-low;
+			};
+		};
+	};
+	flashlight_strb0 {
+		flashlight_strb0_default: flashlight_strb0_default {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO167__FUNC_GPIO167>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-pull-down;
+			};
+		};
+		flashlight_strb0_active: flashlight_strb0_active {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO167__FUNC_GPIO167>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				output-high;
+				bias-enable;
+			};
+		};
+		flashlight_strb0_sleep: flashlight_strb0_sleep {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO167__FUNC_GPIO167>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-pull-down;
+				output-low;
+			};
+		};
+	};
+	flashlight_strb1 {
+		flashlight_strb1_default: flashlight_strb1_default {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO168__FUNC_GPIO168>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-pull-down;
+			};
+		};
+		flashlight_strb1_active: flashlight_strb1_active {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO168__FUNC_GPIO168>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				output-high;
+				bias-enable;
+			};
+		};
+		flashlight_strb1_sleep: flashlight_strb1_sleep {
+			pins_cmd_dat {
+				pinmux = <PINMUX_GPIO168__FUNC_GPIO168>;
+				slew-rate = <1>;
+				drive-strength = <2>;
+				bias-pull-down;
+				output-low;
+			};
+		};
+	};
+};
+
+&mt6370_pmu {
+		rgbled {
+			compatible = "mediatek,mt6370_pmu_rgbled";
+			mt,led_default_trigger = "pwm_mode", "none",
+						"none", "pwm_mode";
+			mt,led_name = "green", "blue", "mt6370_pmu_led3", "red";
+		};
+		bled {
+			compatible = "mediatek,mt6370_pmu_bled";
+			interrupt-names = "bled_ocp";
+			mt,bled_name = "mt6370_pmu_bled";
+			/* mt,ext_en_pin; */
+			mt,chan_en  = <0xA>; /* bit 0 1 2 3 -> chan 1 2 3 4 */
+			mt,map_linear;
+			mt,bl_ovp_level = <3>;	/* 0: 17v */
+						/* 1: 21v */
+						/* 2: 25v */
+						/* 3: 29v */
+			mt,bl_ocp_level = <2>;	/* 0: 900mA */
+						/* 1: 1200mA */
+						/* 2: 1500mA */
+						/* 3: 1800mA */
+			mt,use_pwm;
+			mt,pwm_fsample = <1>;	/* 0: 1MHz */
+						/* 1: 4MHz */
+						/* 2: or 3: 24mHz */
+			mt,pwm_deglitch = <1>;	/* 0: no filter */
+						/* 1: 100ns */
+						/* 2: 160ns */
+						/* 3: 200ns */
+			mt,pwm_avg_cycle = <0>; /* 0: disable avg */
+						/* 1: avg 2 cycle */
+						/* 2: avg 4 cycle */
+						/* 3: avg 8 cycle */
+						/* 4: avg 16 cycle */
+						/* 5: avg 32 cycle */
+			mt,bled_ramptime = <3>; /* 0, 500us, 750us, 1ms, 2ms */
+						/* 5ms, 10ms, 20ms, 50ms */
+						/* 100ms, 250ms, 800ms */
+						/* 1s, 2s, 4s, 8s */
+			mt,bled_flash_ramp = <0>;	/* 0, 500us, 750us */
+							/* 1ms, 2ms, 5ms */
+
+			/* we have 11 bit resolution, quantize in driver */
+			mt,max_bled_brightness = <1369>; /* maximum 2047 */
+
+		};
+};
+
+
+&i2c2 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	clock-frequency = <400000>;
+
+	kc_light_ktd2687@63 {
+		status = "okay";
+		compatible = "mediatek,kc_light_ktd2687";
+		reg = <0x63>;
+
+		kc,flash_reset = <&pio 163 0x00>;
+		kc,flash_strb0 = <&pio 167 0x00>;
+		kc,flash_strb1 = <&pio 168 0x00>;
+
+		//Torch Light Level
+		torch_light_level_fixed;
+		torch_light_level = <4>;
+
+		pinctrl-names = "i2c_suspend", "i2c_active";
+		pinctrl-0 = <&ktd2687_i2c_off>;
+		pinctrl-1 = <&ktd2687_i2c_active>; 
+
+		flash {
+			label = "flash";
+			linux,name = "movielight";
+		};
+	};
+
+};
+
+
+&pio {
+	ktd2687_i2c_active: ktd2687_i2c_active {
+			pins_cmd_dat1 {
+					pinmux = <PINMUX_GPIO104__FUNC_SDA2>;
+					slew-rate = <0>;
+					bias-pull-up;
+			};
+			pins_cmd_dat2 {
+					pinmux = <PINMUX_GPIO103__FUNC_SCL2>;
+					slew-rate = <0>;
+					bias-pull-up;
+			};
+	};
+	ktd2687_i2c_off: ktd2687_i2c_off {
+			pins_cmd_dat1 {
+					pinmux = <PINMUX_GPIO104__FUNC_GPIO104>;
+					slew-rate = <0>;
+					bias-pull-down;
+			};
+			pins_cmd_dat2 {
+					pinmux = <PINMUX_GPIO103__FUNC_GPIO103>;
+					slew-rate = <0>;
+					bias-pull-down;
+			};
+	};
+};

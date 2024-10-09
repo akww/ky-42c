@@ -1,0 +1,54 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&odm {
+	usb_phy_tuning: usb_phy_tuning {
+		compatible  = "mediatek,phy_tuning";
+		u2_hstx_srctrl = <7>;
+		u2_vrt_ref     = <4>;
+		u2_term_ref    = <1>;
+		u2_enhance     = <3>;
+		u2_sqth        = <1>;
+		u2_discth      = <15>;
+	};
+};
+
+&pio {
+	usbc_int_default: usbc_int_default {
+        	pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO80__FUNC_GPIO80>;
+			drive-strength = <0>;
+			bias-pull-up;
+        	};
+        	pins_cmd1_dat {
+			pinmux = <PINMUX_GPIO79__FUNC_GPIO79>;
+			drive-strength = <0>;
+			output-low;
+			bias-disable;
+        	};
+	};
+};
+
+&i2c6 {
+	pericom-type-c@1d {
+		compatible = "pericom,usb-type-c";
+		reg = <0x1d>;
+		interrupt-parent = <&pio>;
+		interrupts = <80 IRQ_TYPE_EDGE_FALLING 80 0>; /* TLMM 80, TRIGGER_FALLING */
+		pericom,enb-gpio = <&pio 79 0x0>;	/* active high */
+		pinctrl-names = "default";
+		pinctrl-0 = <&usbc_int_default>;
+		status = "okay";
+	};
+};

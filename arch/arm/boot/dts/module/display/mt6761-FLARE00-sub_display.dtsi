@@ -1,0 +1,76 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2021 KYOCERA Corporation
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "panel-kc-pioneer-092inch.dtsi"
+//#include <dt-bindings/clock/msm-clocks-8952.h>
+
+//&disp_ext_sub {
+//	kc,disp-ext-sub-rst-gpio = <&tlmm 63 0>;
+//	kc,disp-ext-sub-vh-gpio = <&tlmm 64 0>;
+//};
+
+//&soc {
+//	i2c@78b7000 { /* BLSP1 QUP3 */
+//		ld7032@30 {
+//			compatible = "ldt,ld7032";
+//			reg = <0x30>;
+//		};
+////		status = "ok";
+//	};
+//};
+
+&i2c0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	clock-frequency = <400000>;
+
+	ld7032@30 {
+		compatible = "ldt,ld7032";
+		reg = <0x30>;
+		status = "okay";
+
+//		kc,disp-ext-sub-rst-gpio = <&pio 87 0x00>;
+//		kc,disp-ext-sub-vh-gpio = <&pio 88 0x00>;
+	};
+
+// 	disp_ext_sub@0 {
+// 		compatible = "disp_i2c";
+// 		#address-cells = <1>;
+// 		#size-cells = <0>;
+// 		reg = <0>;
+// 		spi-max-frequency = <4500000>;
+// 	};
+};
+
+&disp_ext_sub {
+	kc,disp-ext-sub-rst-gpio = <&pio 87 0x00>;
+	kc,disp-ext-sub-vh-gpio = <&pio 88 0x00>;
+};
+
+//&i2c_3 {
+////    qcom,clk-freq-out = <376000>;
+////    pinctrl-0 = <&kc_i2c_3_active>;
+////    pinctrl-1 = <&kc_i2c_3_sleep>;
+/////    status = "ok";
+//
+//	disp_ext_sub@0 {
+//		compatible = "disp_i2c";
+//		#address-cells = <1>;
+//		#size-cells = <0>;
+//		reg = <0>;
+//		spi-max-frequency = <4500000>;
+//	};
+//};
+

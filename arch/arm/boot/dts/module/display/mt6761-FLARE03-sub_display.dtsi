@@ -1,0 +1,91 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "panel-kc-st7571-slcd-spi.dtsi"
+
+&disp_ext_sub {
+	pinctrl-names = "kc_sub_default", "kc_sub_sleep";
+	pinctrl-0 = <&kc_sub_spi_cs &kc_sub_spi_clk &kc_sub_spi_data>;
+	pinctrl-1 = <&kc_sub_spi_cs_sleep &kc_sub_spi_clk_sleep &kc_sub_spi_data_sleep>;
+
+	kc,disp-ext-sub-rst-gpio = <&pio 87 0x00>;
+	kc,disp-ext-sub-spi-rs-gpio = <&pio 160 0x00>;
+	kc,disp-ext-sub-spi-cs-gpio = <&pio 156 0x00>;
+	kc,disp-ext-sub-spi-clk-gpio= <&pio 158 0x00>;
+	kc,disp-ext-sub-spi-data-gpio= <&pio 157 0x00>;
+};
+
+&pio {
+	kc_sub_spi_cs: kc_sub_spi_cs {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO156__FUNC_SPI0_CSB>;
+			drive-strength = <3>;
+		};
+	};
+
+	kc_sub_spi_cs_sleep: kc_sub_spi_cs_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO156__FUNC_GPIO156>;
+			drive-strength = <0>;
+			bias-disable;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	kc_sub_spi_clk: kc_sub_spi_clk {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO158__FUNC_SPI0_CLK>;
+			drive-strength = <3>;
+		};
+	};
+
+	kc_sub_spi_clk_sleep: kc_sub_spi_clk_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO158__FUNC_GPIO158>;
+			drive-strength = <0>;
+			bias-disable;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	kc_sub_spi_data: kc_sub_spi_data {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO157__FUNC_SPI0_MO>;
+			drive-strength = <3>;
+		};
+	};
+
+	kc_sub_spi_data_sleep: kc_sub_spi_data_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO157__FUNC_GPIO157>;
+			drive-strength = <0>;
+			bias-disable;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+};
+
+&spi0 {
+	status = "ok";
+	disp_ext_sub@0 {
+		compatible = "kc,st7571";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0>;
+		spi-max-frequency = <4500000>;
+	};
+};

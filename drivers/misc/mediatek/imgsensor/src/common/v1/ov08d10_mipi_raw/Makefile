@@ -1,0 +1,1 @@
+obj-y += ov08d10mipiraw_sensor.o

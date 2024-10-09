@@ -1,0 +1,204 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/pinctrl/mt6765-pinfunc.h>
+
+&touch {
+	tpd-resolution = <1080 2280>;
+	use-tpd-button = <0>;
+	tpd-key-num = <3>;
+	tpd-key-local= <139 172 158 0>;
+	tpd-key-dim-local = <90 883 100 40 230
+				 883 100 40 370 883 100 40 0 0 0 0>;
+	tpd-max-touch-num = <5>;
+	tpd-filter-enable = <1>;
+	tpd-filter-pixel-density = <432>;
+	tpd-filter-custom-prameters = <0 0 0 0 0 0 0 0 0 0 0 0>;
+	tpd-filter-custom-speed = <0 0 0>;
+	pinctrl-names = "default", "state_eint_as_int", "state_eint_output0",
+		"state_eint_output1", "state_rst_output0", "state_rst_output1", "state_i2c_active", "state_i2c_sleep",
+		"state_vdd_output0", "state_vdd_output1", "state_avdd_output0", "state_avdd_output1";
+	pinctrl-0 = <&ctp_pins_default>;
+	pinctrl-1 = <&ctp_pins_eint_as_int>;
+	pinctrl-2 = <&ctp_pins_eint_output0>;
+	pinctrl-3 = <&ctp_pins_eint_output1>;
+	pinctrl-4 = <&ctp_pins_rst_output0>;
+	pinctrl-5 = <&ctp_pins_rst_output1>;
+	pinctrl-6 = <&tp_i2c_active>;
+	pinctrl-7 = <&tp_i2c_sleep>;
+	pinctrl-8 = <&tp_vdd_sleep>;
+	pinctrl-9 = <&tp_vdd_active>;
+	pinctrl-10 = <&tp_avdd_sleep>;
+	pinctrl-11 = <&tp_avdd_active>;
+	
+	status = "okay";
+};
+
+&i2c0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	clock-frequency = <400000>;
+
+	cap_touch@24 {
+		compatible = "mediatek,cap_touch";
+		reg = <0x24>;
+		status = "okay";
+
+		cy,adapter_id = "cyttsp5_i2c_adapter";
+
+//		pinctrl-names = "pmx_ts_active","pmx_ts_suspend";
+//		pinctrl-0 = <&tp_int_act>;
+//		pinctrl-1 = <&tp_int_sus>;
+
+		cy,core {
+			cy,name = "cyttsp5_core";
+
+			cy,irq_gpio = <&pio 0 0x2008>;
+			cy,rst_gpio = <&pio 174 0x0>;
+			cy,vdd_18_gpio = <&pio 153 0x0>;
+			cy,avdd_30_gpio = <&pio 171 0x0>;
+
+			cy,irq_gpio_num = <0>;
+			cy,rst_gpio_num = <174>;
+			cy,vdd_18_gpio_num = <153>;
+			cy,avdd_30_gpio_num = <171>;
+
+			cy,hid_desc_register = <1>;
+			cy,flags = <5>;
+			cy,easy_wakeup_gesture = <0>;
+			cy,glove_valid = <1>;
+			cy,fw_type = <0>;
+
+			cy,mt {
+				cy,name = "cyttsp5_mt";
+				cy,inp_dev_name = "cyttsp5_mt";
+				cy,flags = <0x80>;
+				cy,abs =
+					<0x35 0 960 0 0
+					0x36 0 540 0 0
+					0x3a 0 250 0 0
+					0xffff 0 255 0 0
+					0x39 0 15 0 0
+					0x30 0 20 0 0
+					0x31 0 20 0 0
+					0x34 0xffffff81 127 0 0
+					0x19 0 255 0 0>;
+			};
+		};
+
+
+	};
+};
+
+&pio {
+	ctp_pins_default: eint0default {
+	};
+	ctp_pins_eint_as_int: eint@0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO0__FUNC_GPIO0>;
+			slew-rate = <0>;
+			bias-pull-up;
+		};
+	};
+	ctp_pins_eint_output0: eintoutput0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO0__FUNC_GPIO0>;
+			slew-rate = <0>; /* input */
+			bias-pull-down;
+		};
+	};
+	ctp_pins_eint_output1: eintoutput1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO0__FUNC_GPIO0>;
+			slew-rate = <0>; /* input */
+			bias-pull-up;
+		};
+	};
+	ctp_pins_rst_output0: rstoutput0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO174__FUNC_GPIO174>;
+			slew-rate = <1>; /* output */
+			bias-disable; /* Non-pull */
+			output-low;
+		};
+	};
+	ctp_pins_rst_output1: rstoutput1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO174__FUNC_GPIO174>;
+			slew-rate = <1>; /* output */
+			bias-disable; /* Non-pull */
+			output-high;
+		};
+	};
+
+	tp_i2c_active: tp_i2c_active {
+		pins_cmd_dat1 {
+			pinmux = <PINMUX_GPIO82__FUNC_SDA0>;
+			slew-rate = <0>;
+			bias-pull-up;
+		};
+		pins_cmd_dat2 {
+			pinmux = <PINMUX_GPIO83__FUNC_SCL0>;
+			slew-rate = <0>;
+			bias-pull-up;
+		};
+	};
+	tp_i2c_sleep: tp_i2c_sleep {
+		pins_cmd_dat1 {
+			pinmux = <PINMUX_GPIO82__FUNC_GPIO82>;
+			slew-rate = <0>;
+			bias-pull-down;
+		};
+		pins_cmd_dat2 {
+			pinmux = <PINMUX_GPIO83__FUNC_GPIO83>;
+			slew-rate = <0>;
+			bias-pull-down;
+		};
+	};
+
+	tp_vdd_sleep: tp_vdd_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO153__FUNC_GPIO153>;
+			slew-rate = <1>; /* output */
+			bias-disable; /* Non-pull */
+			output-low;
+		};
+	};
+	tp_vdd_active: tp_vdd_active {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO153__FUNC_GPIO153>;
+			slew-rate = <1>; /* output */
+			bias-disable; /* Non-pull */
+			output-high;
+		};
+	};
+
+	tp_avdd_sleep: tp_avdd_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO171__FUNC_GPIO171>;
+			slew-rate = <1>; /* output */
+			bias-disable; /* Non-pull */
+			output-low;
+		};
+	};
+	tp_avdd_active: tp_avdd_active {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO171__FUNC_GPIO171>;
+			slew-rate = <1>; /* output */
+			bias-disable; /* Non-pull */
+			output-high;
+		};
+	};
+
+};

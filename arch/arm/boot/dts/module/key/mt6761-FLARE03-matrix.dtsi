@@ -1,0 +1,165 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2021 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&pio {
+	ko_lines {
+		ko_active: ko_active {
+			pins_cmd0_dat {
+				pinmux = <PINMUX_GPIO23__FUNC_GPIO23>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+			pins_cmd1_dat {
+				pinmux = <PINMUX_GPIO25__FUNC_GPIO25>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+			pins_cmd2_dat {
+				pinmux = <PINMUX_GPIO26__FUNC_GPIO26>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+			pins_cmd3_dat {
+				pinmux = <PINMUX_GPIO27__FUNC_GPIO27>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+			pins_cmd4_dat {
+				pinmux = <PINMUX_GPIO28__FUNC_GPIO28>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+			pins_cmd5_dat {
+				pinmux = <PINMUX_GPIO42__FUNC_GPIO42>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+			pins_cmd6_dat {
+				pinmux = <PINMUX_GPIO92__FUNC_GPIO92>;
+				slew-rate = <1>;
+				output-low;
+				bias-disable;
+			};
+		};
+		ko_prescan: ko_prescan {
+			pins_cmd0_dat {
+				pinmux = <PINMUX_GPIO23__FUNC_GPIO23>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+			pins_cmd1_dat {
+				pinmux = <PINMUX_GPIO25__FUNC_GPIO25>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+			pins_cmd2_dat {
+				pinmux = <PINMUX_GPIO26__FUNC_GPIO26>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+			pins_cmd3_dat {
+				pinmux = <PINMUX_GPIO27__FUNC_GPIO27>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+			pins_cmd4_dat {
+				pinmux = <PINMUX_GPIO28__FUNC_GPIO28>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+			pins_cmd5_dat {
+				pinmux = <PINMUX_GPIO42__FUNC_GPIO42>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+			pins_cmd6_dat {
+				pinmux = <PINMUX_GPIO92__FUNC_GPIO92>;
+				slew-rate = <0>;
+				input-enable;
+				bias-pull-up;
+			};
+		};
+	};
+};
+
+&odm {
+	matrix_keypad: matrix_keypad@0 {
+		compatible = "gpio-matrix-keypad";
+		pinctrl-names = "matrix_keypad_active","matrix_keypad_prescan";
+		pinctrl-0 = <&ko_active>;
+		pinctrl-1 = <&ko_prescan>;
+		debounce-delay-ms = <25>;
+		col-scan-delay-us = <5>;
+		gpio-activelow;
+		linux,no-autorepeat;
+		linux,wakeup;
+
+		row-gpios = <
+			&pio 94 0
+			&pio 107 0
+			&pio 108 0
+			&pio 109 0
+			&pio 41 0
+		>;
+
+		col-gpios = <
+			&pio 23 0
+			&pio 25 0
+			&pio 26 0
+			&pio 27 0
+			&pio 28 0
+			&pio 42 0
+			&pio 92 0
+		>;
+
+		linux,keymap = <
+			0x00020207	/* KEY_NUMERIC_7 */
+			0x0004020B	/* KEY_NUMERIC_POUND */
+			0x00060200	/* KEY_NUMERIC_0 */
+			0x01000205	/* KEY_NUMERIC_5 */
+			0x0101003B	/* KEY_F1 [59] */
+			0x0102003C	/* KEY_F2 [60] */
+			0x0103020A	/* KEY_NUMERIC_STAR [522] */
+			0x0105006C	/* KEY_DOWN [108] */
+			0x01060069	/* KEY_LEFT [105] */
+			0x02000203	/* KEY_NUMERIC_3 */
+			0x02040209	/* KEY_NUMERIC_9 */
+			0x02050067	/* KEY_UP [103] */
+			0x0206006A	/* KEY_RIGHT [106] */
+			0x030000A9	/* KEY_PHONE [169] */
+			0x03010202	/* KEY_NUMERIC_2 */
+			0x03030206	/* KEY_NUMERIC_6 */
+			0x0304003D	/* KEY_F3 [61] */
+			0x03060201	/* KEY_NUMERIC_1 */
+			0x0400003E	/* KEY_F4 [62] */
+			0x04010204	/* KEY_NUMERIC_4 */
+			0x0402001C	/* KEY_ENTER [28] */
+			0x04040163	/* KEY_CLEAR */
+			0x04050208	/* KEY_NUMERIC_8 */
+		>;
+	};
+};
+

@@ -1,0 +1,99 @@
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+/* CAMERA GPIO standardization */
+&pio {
+        camera_pins_cam0_iic_on: camera_pins_cam0_iic_on {
+                pins_cmd_dat1 {
+                        pinmux = <PINMUX_GPIO104__FUNC_SDA2>;
+                        slew-rate = <0>;
+                        bias-pull-up;
+                };
+                pins_cmd_dat2 {
+                        pinmux = <PINMUX_GPIO103__FUNC_SCL2>;
+                        slew-rate = <0>;
+                        bias-pull-up;
+                };
+        };
+        camera_pins_cam0_iic_off: camera_pins_cam0_iic_off {
+                pins_cmd_dat1 {
+                        pinmux = <PINMUX_GPIO104__FUNC_GPIO104>;
+                        slew-rate = <0>;
+                        bias-pull-down;
+                };
+                pins_cmd_dat2 {
+                        pinmux = <PINMUX_GPIO103__FUNC_GPIO103>;
+                        slew-rate = <0>;
+                        bias-pull-down;
+                };
+        };
+	camera_pins_cam0_mclk_on: camera_pins_cam0_mclk_on {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO99__FUNC_CMMCLK0>;
+			slew-rate = <1>;
+			drive-strength = <MTK_DRIVE_4mA>;
+			bias-pulldown;
+			output-low;
+		};
+	};
+	camera_pins_cam0_mclk_off: camera_pins_cam0_mclk_off {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO99__FUNC_GPIO99>;
+			slew-rate = <1>;
+			drive-strength = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	camera_pins_cam0_rst0: cam0@0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO101__FUNC_GPIO101>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	camera_pins_cam0_rst1: cam0@1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO101__FUNC_GPIO101>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	camera_pins_default: camdefault {
+	};
+
+};
+
+&kd_camera_hw1 {
+	pinctrl-names = "default",
+			"cam0_rst0",
+			"cam0_rst1",
+			"cam0_mclk_on",
+			"cam0_mclk_off",
+			"cam0_iic_iic",
+			"cam0_iic_gpio";
+
+	pinctrl-0 = <&camera_pins_default>;
+	pinctrl-1 = <&camera_pins_cam0_rst0>;
+	pinctrl-2 = <&camera_pins_cam0_rst1>;
+	pinctrl-3 = <&camera_pins_cam0_mclk_on>;
+	pinctrl-4 = <&camera_pins_cam0_mclk_off>;
+	pinctrl-5 = <&camera_pins_cam0_iic_on>;
+	pinctrl-6 = <&camera_pins_cam0_iic_off>;
+
+	cam0_vcama-supply = <&mt_pmic_vcama_ldo_reg>;
+	cam0_vcamd-supply = <&mt_pmic_vcamd_ldo_reg>;
+	cam0_vcamio-supply = <&mt_pmic_vcamio_ldo_reg>;
+	status = "okay";
+
+};
+/* CAMERA GPIO end */

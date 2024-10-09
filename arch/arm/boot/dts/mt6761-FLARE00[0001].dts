@@ -1,0 +1,33 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pinctrl/mt6761-pinfunc.h>
+#include <dt-bindings/mmc/mt6761-msdc.h>
+#include <dt-bindings/clock/mt6761-clk.h>
+
+#include "mt6761-FLARE-common.dtsi"
+#include "mt6761-FLARE00.dtsi"
+
+&odm {
+    board = "MT6761 FLARE00 0001";
+    platform_subtype = <0x00>;
+    platform_version = <0x01>;
+};
+#include <k61v1_32_bsp_1g/cust.dtsi>
+

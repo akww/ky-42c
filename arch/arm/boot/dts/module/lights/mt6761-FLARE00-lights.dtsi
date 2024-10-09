@@ -1,0 +1,657 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&pio {
+	dev_check_pd: dev_check_pd {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO160__FUNC_GPIO160>;
+			slew-rate = <0>;
+			input-enable;
+			bias-pull-down; /*pull down*/
+		};
+	};
+	dev_check_np: dev_check_np {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO160__FUNC_GPIO160>;
+			slew-rate = <0>;
+            input-enable;
+			bias-disable; /*non pull*/
+		};
+	};
+
+};
+
+&i2c3 {
+	led_lp5569: led_lp5569@40 {
+		compatible = "LP5569";
+		reg = <0x40>;
+		status = "okay";
+
+			kc,reset-gpio = <&pio 111 0x00>;
+//			kc,keyled-gpio = <&pio 86 0x00>;
+//			kc,subled-gpio = <&pio 164 0x00>;
+			kc,keyled-on-gpio = <&pio 174 0x00>;
+            kc,basecheck-gpio = <&pio 160 0x00>;
+
+			pinctrl-names = "dev_check_pd","dev_check_np";
+			pinctrl-0 = <&dev_check_pd>;
+			pinctrl-1 = <&dev_check_np>;
+
+			kclight_reg_poweron_seq = [
+				2F 7D 7D
+				00 40 40
+				0A 20 20
+				0B 20 20
+				0C 20 20
+				0D 20 20
+				0E 20 20
+				0F 20 20
+				19 FF FF
+				1A FF FF
+				1B FF FF
+				1C FF FF
+				1D FF FF
+				1E FF FF
+				22 60 FF
+				23 24 FF
+				24 30 FF
+				2F 7D 7D
+				33 02 1F
+			];
+
+			kclight_reg_pattern_seq = [
+				/* LED0-2 Add:16-18h Data:00h(PWM_00) */
+				16 00 FF  //[0]
+				17 00 FF  //[1]
+				18 00 FF  //[2]
+
+				/* LED0_B Add:22h Data:42h(6.6mA) */
+				22 42 FF  //[3]
+				/* LED1_G Add:23h Data:12h(1.8mA) */
+				23 12 FF  //[4]
+				/* LED2_R Add:24h Data:1Eh(3.2mA) */
+				24 1E FF  //[5]
+
+				02 00 FF  //[6]
+				02 54 FF  //[7]
+
+				/* Add:4Fh Data:00h(page00) */
+				4F 00 FF  //[8]
+				50 00 FF  //[9]
+				51 04 FF  //[10]
+				52 00 FF  //[11]
+				53 05 FF  //[12]->[BLINK_COLOR_ARRAY_POS] RGB
+				54 40 FF  //[13]
+				55 00 FF  //[14]
+				56 9F FF  //[15]
+				57 80 FF  //[16]
+				58 E1 FF  //[17]
+				59 00 FF  //[18]
+				5A 40 FF  //[19]
+				5B 00 FF  //[20]
+				5C 42 FF  //[21]
+				5D 00 FF  //[22]
+				5E 40 FF  //[23]
+				5F 00 FF  //[24]->[BLINK_COLOR_PWM_ARRAY_POS] RGB
+				60 4C FF  //[25]
+				61 00 FF  //[26]
+				62 40 FF  //[27]
+				63 00 FF  //[28]
+				64 40 FF  //[29]
+				65 FF FF  //[30]
+				66 A0 FF  //[31]
+				67 02 FF  //[32]
+				68 C0 FF  //[33]
+				69 00 FF  //[34]
+				6A 40 FF  //[35]
+				6B 00 FF  //[36]
+				6C 9F FF  //[37]
+				6D 81 FF  //[38]
+				6E E0 FF  //[39]
+				6F 02 FF  //[40]
+
+				 /* Add:4Fh Data:01h(page01) */
+				 4F 01 FF  //[41]
+				 50 40 FF  //[42]
+				 51 FF FF  //[43]
+				 52 4E FF  //[44]
+				 53 00 FF  //[45]
+				 54 40 FF  //[46]
+				 55 00 FF  //[47]
+				 56 7E FF  //[48]
+				 57 00 FF  //[49]
+				 58 7E FF  //[50]
+				 59 00 FF  //[51]
+				 5A 7E FF  //[52]
+				 5B 00 FF  //[53]
+				 5C 7A FF  //[54]
+				 5D 00 FF  //[55]
+				 5E A0 FF  //[56]
+				 5F 02 FF  //[57]
+				 60 C0 FF  //[58]
+				 61 00 FF  //[59]
+				 62 C0 FF  //[60]
+				 63 00 FF  //[61]
+				 64 00 FF  //[62]
+				 65 00 FF  //[63]
+				 66 00 FF  //[64]
+				 67 00 FF  //[65]
+				 68 00 FF  //[66]
+				 69 00 FF  //[67]
+				 6A 00 FF  //[68]
+				 6B 00 FF  //[69]
+				 6C 00 FF  //[70]
+				 6D 00 FF  //[71]
+				 6E 00 FF  //[72]
+				 6F 00 FF  //[73]
+
+				 /* Add:02h Data:00h(Disable) */
+				 02 00 FF  //[74]
+
+				 /* Add:4Bh Data:03h(engine1start_register) */
+				 4B 02 FF  //[75]
+
+				 /* Add:4Ch Data:10h(engine1start_register)*/
+				 4C 0D FF  //[76]
+
+				 /* Add:4Dh Data:1Ah(engine1start_register) */
+				 4D 19 FF  //[77]
+			];
+
+			kclight_reg_setpattern1_seq = [
+				16 00 FF
+				02 20 FF
+				01 20 FF
+			];
+
+			kclight_reg_setpattern2_seq = [
+				18 00 FF
+				02 A0 FF
+				01 A0 FF
+			];
+
+			kclight_reg_setpatternoff_seq = [
+				16 00 FF
+				02 00 FF
+				01 00 FF
+			];
+
+			rgb_blink_pwm_table = [00 00 00 00 00 C8 FF AA];
+
+			mled_bl_level_reg = [
+				 00 04 04 04 04 04 04 04 0A 0A  //10
+				 0A 0A 0C 0C 0C 0C 0E 0E 0E 10  //20
+				 10 10 10 12 12 12 12 14 14 14  //30
+				 14 16 16 16 18 18 18 18 1A 1A  //40
+				 1A 1A 1C 1C 1C 1C 1E 1E 1E 20  //50
+				 20 20 20 22 22 22 22 24 24 24  //60
+				 24 26 26 26 26 28 28 28 28 2A  //70
+				 2A 2A 2A 2C 2C 2C 2C 2E 2E 2E  //80
+				 2E 30 30 30 30 32 32 32 32 34  //90
+				 34 34 36 36 36 36 38 38 38 3A  //100
+				 3A 3A 3A 3C 3C 3C 3E 3E 3E 3E  //110
+				 40 40 40 42 42 42 42 44 44 44  //120
+				 46 46 46 46 48 48 48 4A 4A 4A  //130
+				 4A 4C 4C 4C 4E 4E 4E 4E 50 50  //140
+				 50 52 52 52 52 54 54 54 56 56  //150
+				 56 56 58 58 58 5A 5A 5A 5A 5C  //160
+				 5C 5C 5E 5E 5E 5E 60 60 60 60  //170
+				 62 62 62 64 64 64 66 66 66 68  //180
+				 68 68 6A 6A 6A 6C 6C 6C 6E 6E  //190
+				 6E 70 70 70 72 72 72 74 74 74  //200
+				 76 76 76 78 78 78 7A 7A 7A 7C  //210
+				 7C 7C 7C 7E 7E 80 80 80 82 82  //220
+				 82 84 84 84 86 86 86 88 88 88  //230
+				 8A 8A 8A 8C 8C 8C 8E 8E 8E 90  //240
+				 90 90 92 92 92 94 94 94 96 96  //250
+				 96 98 AA B4 BE C8              //256
+			];
+
+			mled_bl_level_seq = [
+				25  AF  FF
+				2A  AF  FF
+				26  AF  FF
+				29  AF  FF
+				27  AF  FF
+				28  AF  FF
+			];
+
+			rgb_current_setting = [
+			   /* reg16 reg17 reg18 reg22 reg23 reg24 */
+				00 00 00 00 00 00  // OFF
+				00 00 FF 00 00 24  // R
+				00 FF 00 00 12 00  // G
+				FF 00 00 42 00 00  // B
+				00 FF FF 00 0C 24  // R + G
+				FF FF 00 24 0C 00  // G + B
+				FF 00 FF 12 00 24  // R + B
+				FF FF FF 18 12 18  // R + G + B
+
+				00 00 00 00 00 00  // OFF
+				00 00 FF 00 00 24  // R
+				00 FF 00 00 12 00  // G
+				FF 00 00 42 00 00  // B
+				00 FF FF 00 0C 24  // R + G
+				FF FF 00 24 0C 00  // G + B
+				FF 00 FF 12 00 24  // R + B
+				FF FF FF 18 12 18  // R + G + B
+
+				00 00 00 00 00 00  // OFF
+				00 00 FF 00 00 24  // R
+				00 FF 00 00 12 00  // G
+				FF 00 00 42 00 00  // B
+				00 FF FF 00 0C 24  // R + G
+				FF FF 00 24 0C 00  // G + B
+				FF 00 FF 12 00 24  // R + B
+				FF FF FF 18 12 18  // R + G + B
+
+				00 00 00 00 00 00  // OFF
+				00 00 FF 00 00 24  // R
+				00 FF 00 00 12 00  // G
+				FF 00 00 42 00 00  // B
+				00 FF FF 00 0C 24  // R + G
+				FF FF 00 24 0C 00  // G + B
+				FF 00 FF 12 00 24  // R + B
+				FF FF FF 18 12 18  // R + G + B
+
+				00 00 00 00 00 00  // OFF
+				00 00 FF 00 00 24  // R
+				00 FF 00 00 12 00  // G
+				FF 00 00 42 00 00  // B
+				00 FF FF 00 0C 24  // R + G
+				FF FF 00 24 0C 00  // G + B
+				FF 00 FF 12 00 24  // R + B
+				FF FF FF 18 12 18  // R + G + B
+			];
+
+			lcd_backlight {
+				label = "mled";
+				linux,name = "lcd-backlight";
+			};
+			rgb {
+				label = "rgb";
+				linux,name = "ledinfo";
+			};
+			button-backlight {
+				label = "keyled";
+				linux,name = "button-backlight";
+			};
+//			sub-lcd-backlight {
+//				label = "sled";
+//				linux,name = "subbacklightinfo";
+//			};
+	};
+
+
+	led_lv5216: led_lv5216@74 {
+		compatible = "LV5216";
+		reg = <0x74>;
+		status = "okay";
+
+			kc,reset-gpio = <&pio 111 0x00>;
+//			kc,keyled-gpio = <&pio 86 0x00>;
+//			kc,subled-gpio = <&pio 164 0x00>;
+			kc,keyled-on-gpio = <&pio 174 0x00>;
+            kc,basecheck-gpio = <&pio 160 0x00>;
+
+			pinctrl-names = "dev_check_pd","dev_check_np";
+			pinctrl-0 = <&dev_check_pd>;
+			pinctrl-1 = <&dev_check_np>;
+
+			lv5216_reg_info_save = [
+			// int, bool
+				00 00	//00 false(0)
+				00 00	//01 false(0)
+				08 00	//02 false(0)
+				48 00	//03 false(0)
+				00 00	//04 false(0)
+				00 00	//05 false(0)
+				0A 00	//06 false(0)
+				08 00	//07 false(0)
+				0A 00	//08 false(0)
+				9F 00	//09 false(0)
+				02 00	//10 false(0)
+				80 00	//11 false(0)
+				00 00	//12 false(0)
+				00 00	//13 false(0)
+				00 00	//14 false(0)
+				00 00	//15 false(0)
+				00 00	//16 false(0)
+				00 00	//17 false(0)
+				00 00	//18 false(0)
+				00 00	//19 false(0)
+				07 00	//20 false(0)
+			];
+
+			mled_reg03_reg01_manual = [
+				00 00	//0
+				20 1D	//1
+				20 1D	//2
+				20 1D	//3
+				20 1D	//4
+				20 1D	//5
+				20 1D	//6
+				20 1D	//7
+				20 1F	//8
+				20 1F	//9
+				20 1F	//10
+				20 1F	//11
+				40 1F	//12
+				40 1F	//13
+				40 1F	//14
+				40 1F	//15
+				60 1F	//16
+				60 1F	//17
+				60 1F	//18
+				21 1F	//19
+				21 1F	//20
+				21 1F	//21
+				21 1F	//22
+				41 1F	//23
+				41 1F	//24
+				41 1F	//25
+				41 1F	//26
+				61 1F	//27
+				61 1F	//28
+				61 1F	//29
+				61 1F	//30
+				22 1F	//31
+				22 1F	//32
+				22 1F	//33
+				42 1F	//34
+				42 1F	//35
+				42 1F	//36
+				42 1F	//37
+				62 1F	//38
+				62 1F	//39
+				62 1F	//40
+				62 1F	//41
+				23 1F	//42
+				23 1F	//43
+				23 1F	//44
+				23 1F	//45
+				43 1F	//46
+				43 1F	//47
+				43 1F	//48
+				63 1F	//49
+				63 1F	//50
+				63 1F	//51
+				63 1F	//52
+				24 1F	//53
+				24 1F	//54
+				24 1F	//55
+				24 1F	//56
+				44 1F	//57
+				44 1F	//58
+				44 1F	//59
+				44 1F	//60
+				64 1F	//61
+				64 1F	//62
+				64 1F	//63
+				64 1F	//64
+				25 1F	//65
+				25 1F	//66
+				25 1F	//67
+				25 1F	//68
+				45 1F	//69
+				45 1F	//70
+				45 1F	//71
+				45 1F	//72
+				65 1F	//73
+				65 1F	//74
+				65 1F	//75
+				65 1F	//76
+				26 1F	//77
+				26 1F	//78
+				26 1F	//79
+				26 1F	//80
+				46 1F	//81
+				46 1F	//82
+				46 1F	//83
+				46 1F	//84
+				66 1F	//85
+				66 1F	//86
+				66 1F	//87
+				66 1F	//88
+				27 1F	//89
+				27 1F	//90
+				27 1F	//91
+				47 1F	//92
+				47 1F	//93
+				47 1F	//94
+				47 1F	//95
+				67 1F	//96
+				67 1F	//97
+				67 1F	//98
+				28 1F	//99
+				28 1F	//100
+				28 1F	//101
+				28 1F	//102
+				48 1F	//103
+				48 1F	//104
+				48 1F	//105
+				68 1F	//106
+				68 1F	//107
+				68 1F	//108
+				68 1F	//109
+				29 1F	//110
+				29 1F	//111
+				29 1F	//112
+				49 1F	//113
+				49 1F	//114
+				49 1F	//115
+				49 1F	//116
+				69 1F	//117
+				69 1F	//118
+				69 1F	//119
+				2A 1F	//120
+				2A 1F	//121
+				2A 1F	//122
+				2A 1F	//123
+				4A 1F	//124
+				4A 1F	//125
+				4A 1F	//126
+				6A 1F	//127
+				6A 1F	//128
+				6A 1F	//129
+				6A 1F	//130
+				2B 1F	//131
+				2B 1F	//132
+				2B 1F	//133
+				4B 1F	//134
+				4B 1F	//135
+				4B 1F	//136
+				4B 1F	//137
+				6B 1F	//138
+				6B 1F	//139
+				6B 1F	//140
+				2C 1F	//141
+				2C 1F	//142
+				2C 1F	//143
+				2C 1F	//144
+				4C 1F	//145
+				4C 1F	//146
+				4C 1F	//147
+				6C 1F	//148
+				6C 1F	//149
+				6C 1F	//150
+				6C 1F	//151
+				2D 1F	//152
+				2D 1F	//153
+				2D 1F	//154
+				4D 1F	//155
+				4D 1F	//156
+				4D 1F	//157
+				4D 1F	//158
+				6D 1F	//159
+				6D 1F	//160
+				6D 1F	//161
+				2E 1F	//162
+				2E 1F	//163
+				2E 1F	//164
+				2E 1F	//165
+				4E 1F	//166
+				4E 1F	//167
+				4E 1F	//168
+				4E 1F	//169
+				6E 1F	//170
+				6E 1F	//171
+				6E 1F	//172
+				2F 1F	//173
+				2F 1F	//174
+				2F 1F	//175
+				4F 1F	//176
+				4F 1F	//177
+				4F 1F	//178
+				6F 1F	//179
+				6F 1F	//180
+				6F 1F	//181
+				30 1F	//182
+				30 1F	//183
+				30 1F	//184
+				50 1F	//185
+				50 1F	//186
+				50 1F	//187
+				70 1F	//188
+				70 1F	//189
+				70 1F	//190
+				31 1F	//191
+				31 1F	//192
+				31 1F	//193
+				51 1F	//194
+				51 1F	//195
+				51 1F	//196
+				71 1F	//197
+				71 1F	//198
+				71 1F	//199
+				32 1F	//200
+				32 1F	//201
+				32 1F	//202
+				52 1F	//203
+				52 1F	//204
+				52 1F	//205
+				72 1F	//206
+				72 1F	//207
+				72 1F	//208
+				33 1F	//209
+				33 1F	//210
+				33 1F	//211
+				53 1F	//212
+				53 1F	//213
+				53 1F	//214
+				73 1F	//215
+				73 1F	//216
+				73 1F	//217
+				34 1F	//218
+				34 1F	//219
+				34 1F	//220
+				54 1F	//221
+				54 1F	//222
+				54 1F	//223
+				74 1F	//224
+				74 1F	//225
+				74 1F	//226
+				35 1F	//227
+				35 1F	//228
+				35 1F	//229
+				55 1F	//230
+				55 1F	//231
+				55 1F	//232
+				75 1F	//233
+				75 1F	//234
+				75 1F	//235
+				36 1F	//236
+				36 1F	//237
+				36 1F	//238
+				56 1F	//239
+				56 1F	//240
+				56 1F	//241
+				76 1F	//242
+				76 1F	//243
+				76 1F	//244
+				37 1F	//245
+				37 1F	//246
+				37 1F	//247
+				57 1F	//248
+				57 1F	//249
+				57 1F	//250
+				77 1F	//251
+				7A 1F	//252
+				5C 1F	//253
+				3E 1F	//254
+				7F 1F	//255
+			];
+
+			rgb_current_setting = [
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+			];
+
+			lcd_backlight {
+				label = "mled";
+				linux,name = "lcd-backlight";
+			};
+			rgb {
+				label = "rgb";
+				linux,name = "ledinfo";
+			};
+			button-backlight {
+				label = "keyled";
+				linux,name = "button-backlight";
+			};
+//			sub-lcd-backlight {
+//				label = "sled";
+//				linux,name = "subbacklightinfo";
+//			};
+	};
+
+};
+

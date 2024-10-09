@@ -1,0 +1,64 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&pio {
+
+	buzzer_pwm_gpio_default:buzzer_pwm_gpio_default {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO23__FUNC_GPIO23>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+//			input-schmitt-enable = <0>;
+		};
+	};
+
+	buzzer_pwm_gpio_set:buzzer_pwm_gpio_set {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO23__FUNC_PWM0>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	buzzer_5v_cnt_active: buzzer_5v_cnt_active {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO173__FUNC_GPIO173>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	buzzer_5v_cnt_suspend: buzzer_5v_cnt_suspend {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO173__FUNC_GPIO173>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+};
+
+&odm {
+	pwm_buzzer:pwm_buzzer {
+		status = "okay";
+		compatible = "kc,pwm_buzzer";
+		pinctrl-names = "buzzer_pwm_gpio_default", "buzzer_pwm_gpio_set", "buzzer_5v_cnt_active", "buzzer_5v_cnt_suspend";
+		pinctrl-0 = <&buzzer_pwm_gpio_default>;
+		pinctrl-1 = <&buzzer_pwm_gpio_set>;
+		pinctrl-2 = <&buzzer_5v_cnt_active>;
+		pinctrl-3 = <&buzzer_5v_cnt_suspend>;
+		kc,buzzer_det-gpio = <&pio 4 0>;
+	};
+};

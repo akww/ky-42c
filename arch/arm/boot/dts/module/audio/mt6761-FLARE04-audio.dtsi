@@ -1,0 +1,151 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&accdet {
+    compatible = "mediatek,pmic-accdet-not-use";
+};
+
+&audgpio {
+        pinctrl-names = "aud_clk_mosi_off",
+                        "aud_clk_mosi_on",
+                        "aud_clk_miso_off",
+                        "aud_clk_miso_on",
+                        "aud_dat_mosi_off",
+                        "aud_dat_mosi_on",
+                        "aud_dat_miso_off",
+                        "aud_dat_miso_on",
+                        "extamp-pulllow",
+                        "extamp-pullhigh",
+                        "extamp2-pulllow",
+                        "extamp2-pullhigh";
+        pinctrl-0 = <&aud_clk_mosi_off>;
+        pinctrl-1 = <&aud_clk_mosi_on>;
+        pinctrl-2 = <&aud_clk_miso_off>;
+        pinctrl-3 = <&aud_clk_miso_on>;
+        pinctrl-4 = <&aud_dat_mosi_off>;
+        pinctrl-5 = <&aud_dat_mosi_on>;
+        pinctrl-6 = <&aud_dat_miso_off>;
+        pinctrl-7 = <&aud_dat_miso_on>;
+        pinctrl-8 = <&aud_pins_extpa_off>;
+        pinctrl-9 = <&aud_pins_extpa_on>;
+        pinctrl-10 = <&aud_pins_5vcnt_en_off>;
+        pinctrl-11 = <&aud_pins_5vcnt_en_on>;
+
+        status = "okay";
+};
+
+&pio {
+        aud_clk_mosi_off: aud_clk_mosi_off {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO136__FUNC_GPIO136>;
+                };
+        };
+
+        aud_clk_mosi_on: aud_clk_mosi_on {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO136__FUNC_AUD_CLK_MOSI>;
+                };
+        };
+
+        aud_clk_miso_off: aud_clk_miso_off {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO140__FUNC_GPIO140>;
+                };
+        };
+
+        aud_clk_miso_on: aud_clk_miso_on {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO140__FUNC_AUD_CLK_MISO>;
+                };
+        };
+
+        aud_dat_mosi_off: aud_dat_mosi_off {
+		pins_cmd1_dat {
+                        pinmux = <PINMUX_GPIO138__FUNC_GPIO138>;
+                        input-enable;
+                        slew-rate = <0>;
+                        bias-disable;
+                };
+                pins_cmd2_dat {
+                        pinmux = <PINMUX_GPIO139__FUNC_GPIO139>;
+                        input-enable;
+                        slew-rate = <0>;
+                        bias-disable;
+                };
+        };
+
+        aud_dat_mosi_on: aud_dat_mosi_on {
+                pins_cmd1_dat {
+                        pinmux = <PINMUX_GPIO138__FUNC_AUD_DAT_MOSI0>;
+                };
+                pins_cmd2_dat {
+                        pinmux = <PINMUX_GPIO139__FUNC_AUD_DAT_MOSI1>;
+                };
+        };
+
+        aud_dat_miso_off: aud_dat_miso_off {
+                pins_cmd1_dat {
+                        pinmux = <PINMUX_GPIO142__FUNC_GPIO142>;
+                        input-enable;
+                        slew-rate = <0>;
+                        bias-disable;
+                };
+                pins_cmd2_dat {
+                        pinmux = <PINMUX_GPIO143__FUNC_GPIO143>;
+                        input-enable;
+                        slew-rate = <0>;
+                        bias-disable;
+                };
+        };
+
+        aud_dat_miso_on: aud_dat_miso_on {
+                pins_cmd1_dat {
+                        pinmux = <PINMUX_GPIO142__FUNC_AUD_DAT_MISO0>;
+                };
+                pins_cmd2_dat {
+                        pinmux = <PINMUX_GPIO143__FUNC_AUD_DAT_MISO1>;
+                };
+        };
+
+        aud_pins_extpa_off: aud_pins_extpa_off {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO159__FUNC_GPIO159>;
+			slew-rate = <1>;
+                        output-low;
+                };
+        };
+
+        aud_pins_extpa_on: aud_pins_extpa_on {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO159__FUNC_GPIO159>;
+                        slew-rate = <1>;
+                        output-high;
+                };
+        };
+        aud_pins_5vcnt_en_off: aud_pins_5vcnt_en_off {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO173__FUNC_GPIO173>;
+			slew-rate = <1>;
+                        output-low;
+                };
+        };
+
+        aud_pins_5vcnt_en_on: aud_pins_5vcnt_en_on {
+                pins_cmd0_dat {
+                        pinmux = <PINMUX_GPIO173__FUNC_GPIO173>;
+                        slew-rate = <1>;
+                        output-high;
+                };
+        };
+};

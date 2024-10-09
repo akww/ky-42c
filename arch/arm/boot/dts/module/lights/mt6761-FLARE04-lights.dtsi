@@ -1,0 +1,534 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&pio {
+	dev_check_pd: dev_check_pd {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO160__FUNC_GPIO160>;
+			slew-rate = <0>;
+			input-enable;
+			bias-pull-down; /*pull down*/
+		};
+	};
+	dev_check_np: dev_check_np {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO160__FUNC_GPIO160>;
+			slew-rate = <0>;
+            input-enable;
+			bias-disable; /*non pull*/
+		};
+	};
+
+};
+
+&i2c3 {
+	led_lv5216: led_lv5216@74 {
+		compatible = "LV5216";
+		reg = <0x74>;
+		status = "okay";
+
+			kc,reset-gpio = <&pio 111 0x00>;
+//			kc,keyled-gpio = <&pio 86 0x00>;
+//			kc,subled-gpio = <&pio 164 0x00>;
+//			kc,keyled-on-gpio = <&pio 174 0x00>;
+//            kc,basecheck-gpio = <&pio 160 0x00>;
+
+			pinctrl-names = "dev_check_pd","dev_check_np";
+			pinctrl-0 = <&dev_check_pd>;
+			pinctrl-1 = <&dev_check_np>;
+
+			lv5216_reg_info_save = [
+			// int, bool
+				00 00	//00 false(0)
+				00 00	//01 false(0)
+				08 00	//02 false(0)
+				48 00	//03 false(0)
+				00 00	//04 false(0)
+				00 00	//05 false(0)
+				0A 00	//06 false(0)
+				08 00	//07 false(0)
+				0A 00	//08 false(0)
+				9F 00	//09 false(0)
+				02 00	//10 false(0)
+				80 00	//11 false(0)
+				00 00	//12 false(0)
+				00 00	//13 false(0)
+				00 00	//14 false(0)
+				00 00	//15 false(0)
+				00 00	//16 false(0)
+				00 00	//17 false(0)
+				00 00	//18 false(0)
+				00 00	//19 false(0)
+				07 00	//20 false(0)
+			];
+
+			mled_reg03_reg01_manual = [
+				00 00	//0
+				20 1D	//1
+				20 1D	//2
+				20 1F	//3
+				20 1F	//4
+				40 1F	//5
+				60 1F	//6
+				21 1F	//7
+				21 1F	//8
+				41 1F	//9
+				61 1F	//10
+				22 1F	//11
+				22 1F	//12
+				22 1F	//13
+				42 1F	//14
+				42 1F	//15
+				42 1F	//16
+				42 1F	//17
+				62 1F	//18
+				62 1F	//19
+				23 1F	//20
+				23 1F	//21
+				43 1F	//22
+				43 1F	//23
+				43 1F	//24
+				63 1F	//25
+				63 1F	//26
+				63 1F	//27
+				63 1F	//28
+				24 1F	//29
+				24 1F	//30
+				24 1F	//31
+				24 1F	//32
+				44 1F	//33
+				44 1F	//34
+				44 1F	//35
+				44 1F	//36
+				64 1F	//37
+				64 1F	//38
+				64 1F	//39
+				64 1F	//40
+				25 1F	//41
+				25 1F	//42
+				25 1F	//43
+				25 1F	//44
+				45 1F	//45
+				45 1F	//46
+				45 1F	//47
+				45 1F	//48
+				65 1F	//49
+				65 1F	//50
+				65 1F	//51
+				65 1F	//52
+				26 1F	//53
+				26 1F	//54
+				26 1F	//55
+				26 1F	//56
+				46 1F	//57
+				46 1F	//58
+				46 1F	//59
+				46 1F	//60
+				46 1F	//61
+				66 1F	//62
+				66 1F	//63
+				66 1F	//64
+				66 1F	//65
+				66 1F	//66
+				27 1F	//67
+				27 1F	//68
+				27 1F	//69
+				27 1F	//70
+				27 1F	//71
+				47 1F	//72
+				47 1F	//73
+				47 1F	//74
+				47 1F	//75
+				47 1F	//76
+				47 1F	//77
+				67 1F	//78
+				67 1F	//79
+				67 1F	//80
+				67 1F	//81
+				67 1F	//82
+				67 1F	//83
+				28 1F	//84
+				28 1F	//85
+				28 1F	//86
+				28 1F	//87
+				28 1F	//88
+				28 1F	//89
+				48 1F	//90
+				48 1F	//91
+				48 1F	//92
+				48 1F	//93
+				48 1F	//94
+				48 1F	//95
+				68 1F	//96
+				68 1F	//97
+				68 1F	//98
+				68 1F	//99
+				68 1F	//100
+				68 1F	//101
+				29 1F	//102
+				29 1F	//103
+				29 1F	//104
+				29 1F	//105
+				29 1F	//106
+				29 1F	//107
+				49 1F	//108
+				49 1F	//109
+				49 1F	//110
+				49 1F	//111
+				49 1F	//112
+				49 1F	//113
+				69 1F	//114
+				69 1F	//115
+				69 1F	//116
+				69 1F	//117
+				69 1F	//118
+				69 1F	//119
+				2A 1F	//120
+				2A 1F	//121
+				2A 1F	//122
+				4A 1F	//123
+				4A 1F	//124
+				4A 1F	//125
+				6A 1F	//126
+				6A 1F	//127
+				6A 1F	//128
+				2B 1F	//129
+				2B 1F	//130
+				2B 1F	//131
+				4B 1F	//132
+				4B 1F	//133
+				4B 1F	//134
+				6B 1F	//135
+				6B 1F	//136
+				6B 1F	//137
+				2C 1F	//138
+				2C 1F	//139
+				2C 1F	//140
+				4C 1F	//141
+				4C 1F	//142
+				4C 1F	//143
+				6C 1F	//144
+				6C 1F	//145
+				6C 1F	//146
+				2D 1F	//147
+				2D 1F	//148
+				2D 1F	//149
+				4D 1F	//150
+				4D 1F	//151
+				4D 1F	//152
+				6D 1F	//153
+				6D 1F	//154
+				6D 1F	//155
+				2E 1F	//156
+				2E 1F	//157
+				2E 1F	//158
+				4E 1F	//159
+				4E 1F	//160
+				4E 1F	//161
+				4E 1F	//162
+				6E 1F	//163
+				6E 1F	//164
+				6E 1F	//165
+				6E 1F	//166
+				2F 1F	//167
+				2F 1F	//168
+				2F 1F	//169
+				2F 1F	//170
+				4F 1F	//171
+				4F 1F	//172
+				4F 1F	//173
+				4F 1F	//174
+				6F 1F	//175
+				6F 1F	//176
+				6F 1F	//177
+				6F 1F	//178
+				30 1F	//179
+				30 1F	//180
+				30 1F	//181
+				30 1F	//182
+				50 1F	//183
+				50 1F	//184
+				50 1F	//185
+				50 1F	//186
+				70 1F	//187
+				70 1F	//188
+				70 1F	//189
+				70 1F	//190
+				31 1F	//191
+				31 1F	//192
+				31 1F	//193
+				31 1F	//194
+				51 1F	//195
+				51 1F	//196
+				51 1F	//197
+				51 1F	//198
+				71 1F	//199
+				71 1F	//200
+				71 1F	//201
+				32 1F	//202
+				32 1F	//203
+				32 1F	//204
+				52 1F	//205
+				52 1F	//206
+				52 1F	//207
+				72 1F	//208
+				72 1F	//209
+				72 1F	//210
+				33 1F	//211
+				33 1F	//212
+				33 1F	//213
+				53 1F	//214
+				53 1F	//215
+				53 1F	//216
+				73 1F	//217
+				73 1F	//218
+				73 1F	//219
+				34 1F	//220
+				34 1F	//221
+				34 1F	//222
+				54 1F	//223
+				54 1F	//224
+				54 1F	//225
+				74 1F	//226
+				74 1F	//227
+				74 1F	//228
+				35 1F	//229
+				35 1F	//230
+				35 1F	//231
+				55 1F	//232
+				55 1F	//233
+				55 1F	//234
+				75 1F	//235
+				75 1F	//236
+				75 1F	//237
+				36 1F	//238
+				36 1F	//239
+				36 1F	//240
+				56 1F	//241
+				56 1F	//242
+				56 1F	//243
+				76 1F	//244
+				76 1F	//245
+				76 1F	//246
+				37 1F	//247
+				37 1F	//248
+				37 1F	//249
+				57 1F	//250
+				57 1F	//251
+				57 1F	//252
+				77 1F	//253
+				77 1F	//254
+				77 1F	//255
+			];
+
+			rgb_current_setting = [
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+
+				00 00 0A // B
+				04 00 00 // R
+				00 02 00 // G
+				07 00 01 // R + B
+				00 01 05 // B + G
+				05 01 00 // R + G
+				03 02 03 // R + B + G
+			];
+
+			lcd_backlight {
+				label = "mled";
+				linux,name = "lcd-backlight";
+			};
+//			rgb {
+//				label = "rgb";
+//				linux,name = "ledinfo";
+//			};
+//			button-backlight {
+//				label = "keyled";
+//				linux,name = "button-backlight";
+//			};
+//			sub-lcd-backlight {
+//				label = "sled";
+//				linux,name = "subbacklightinfo";
+//			};
+	};
+
+};
+
+
+#if 0
+&i2c_4 {
+	bd7710gwl@33 {
+		compatible = "BD7710GWL_KC";
+		reg = <0x33>;
+		kc,reset-gpio = <&pio 33 0x00>;
+		kc,strb0-gpio = <&pio 94 0x00>;
+		kc,strb1-gpio = <&pio 98 0x00>;
+	};
+};
+#endif
+
+&odm {
+	kc_leds: kc_leds {
+		compatible = "kc,kc_leds";
+		blue_support;
+		mix_color;
+
+		//on_time + off_time <= 5
+		//ISKINK4
+		red_on_time = <1>;
+		red_off_time = <1>;
+		red_brightness = <2>;
+		//red_hcur_en;
+
+		//ISINK1
+		green_on_time = <1>;
+		green_off_time = <1>;
+		green_brightness = <2>;
+
+		//ISINK2
+		blue_on_time = <1>;
+		blue_off_time = <1>;
+		blue_brightness = <4>;
+
+		//RED + GREEN
+		RG_red_on_time = <1>;
+		RG_red_off_time = <1>;
+		RG_red_brightness = <2>;
+		RG_green_on_time = <1>;
+		RG_green_off_time = <1>;
+		RG_green_brightness = <1>;
+
+		//RED + BLUE
+		RB_red_on_time = <1>;
+		RB_red_off_time = <1>;
+		RB_red_brightness = <2>;
+		RB_blue_on_time = <1>;
+		RB_blue_off_time = <1>;
+		RB_blue_brightness = <3>;
+
+		//GREEN + BLUE
+		GB_green_on_time = <1>;
+		GB_green_off_time = <1>;
+		GB_green_brightness = <2>;
+		GB_blue_on_time = <1>;
+		GB_blue_off_time = <1>;
+		GB_blue_brightness = <2>;
+
+		//RED + GREEN + BLUE
+		RGB_red_on_time = <1>;
+		RGB_red_off_time = <1>;
+		RGB_red_brightness = <1>;
+		RGB_green_on_time = <1>;
+		RGB_green_off_time = <1>;
+		RGB_green_brightness = <3>;
+		RGB_blue_on_time = <1>;
+		RGB_blue_off_time = <1>;
+		RGB_blue_brightness = <2>;
+	};
+
+	led0:led@0 {
+		compatible = "mediatek,red";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led1:led@1 {
+		compatible = "mediatek,green";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led2:led@2 {
+		compatible = "mediatek,blue";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+		/*
+	led2:led@2 {
+		compatible = "mediatek,key-green";
+		led_mode = <2>;
+		data = <175>;
+		gpio_data = <&pio 175 0x0>;
+		pwm_config = <0 0 0 0 0>;
+	};
+*/
+/*
+	led3:led@3 {
+		compatible = "mediatek,key-white";
+		led_mode = <2>;
+		data = <176>;
+		gpio_data = <&pio 176 0x0>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led4:led@4 {
+		compatible = "mediatek,key-blue";
+		led_mode = <2>;
+		data = <177>;
+		gpio_data = <&pio 177 0x0>;
+		pwm_config = <0 0 0 0 0>;
+	};
+	led5:led@5 {
+		compatible = "mediatek,button-backlight";
+		led_mode = <0>;
+		data = <1>;
+		pwm_config = <0 0 0 0 0>;
+	};
+*/
+	led6:led@6 {
+		compatible = "mediatek,lcd-backlight";
+		led_mode = <6>;
+		data = <1>;
+		pwm_config = <0 3 0 0 0>;
+	};
+};
+
+
+&mt6370_pmu {
+		rgbled {
+			compatible = "mediatek,mt6370_pmu_rgbled";
+			mt,led_default_trigger = "pwm_mode", "none",
+						"none", "pwm_mode";
+			mt,led_name = "green", "blue", "mt6370_pmu_led3", "red";
+		};
+};

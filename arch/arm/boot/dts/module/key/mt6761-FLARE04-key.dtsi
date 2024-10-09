@@ -1,0 +1,48 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/pinctrl/mt6761-pinfunc.h>
+
+&pio {
+	gpio_keys_default: gpio_keys_default {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO3__FUNC_GPIO3>;
+			slew-rate = <0>;
+			bias-disable;
+		};
+	};
+};
+
+&odm {
+	gpio_keys {
+		compatible = "gpio-keys";
+		input-name = "gpio-keys";
+		label = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&gpio_keys_default>;
+
+		buzzer_key {
+			label = "buzzer_key";
+			gpios = <&pio 3 1>;
+			linux,input-type = <5>;
+			linux,code = <0x1e>;	/* SW_BUZZER[30] */
+			debounce-interval = <20>;
+			linux,can-disable;
+			gpio-key,wakeup;
+			on_chattering_num  = <5>;
+			off_chattering_num = <5>;
+		};
+	};
+};
+

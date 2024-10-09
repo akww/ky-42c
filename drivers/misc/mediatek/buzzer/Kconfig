@@ -1,0 +1,13 @@
+# This software is contributed or developed by KYOCERA Corporation.
+# (C) 2022 KYOCERA Corporation
+#
+# Buzzer drivers configuration
+#
+
+config MTK_PWM_BUZZER
+	tristate "Buzzer driver"
+	default y
+	  ---help---
+	  Supports buzzer driver using MediaTek PWM.
+	  If you want to use buzzer driver, say Y or M here.
+	  If unsure, say N.

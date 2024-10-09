@@ -1,0 +1,9 @@
+#
+# This software is contributed or developed by KYOCERA Corporation.
+# (C) 2021 KYOCERA Corporation
+#
+comment "STK3338 Power Management Driver"
+
+config STK3338_PM
+	bool "STK3338 Power Mangement Driver"
+	default n

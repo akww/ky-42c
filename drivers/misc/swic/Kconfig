@@ -1,0 +1,8 @@
+#
+# This software is contributed or developed by KYOCERA Corporation.
+# (C) 2022 KYOCERA Corporation
+#
+
+config KC_USB_SWIC
+	tristate
+	default y

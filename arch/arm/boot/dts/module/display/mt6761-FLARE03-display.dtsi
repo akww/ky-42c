@@ -1,0 +1,114 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&mtkfb {
+	pinctrl-names = "state_lcm_vmipi_output0",
+		"state_lcm_vmipi_output1",
+		"state_lcm_bias_output0",
+		"state_lcm_bias_output1",
+		"state_lcm_rst_active",
+		"state_lcm_rst_sleep",
+		"state_lcm_id_active",
+		"state_lcm_id_sleep",
+		"mode_te_gpio",
+		"mode_te_te";
+	pinctrl-0 = <&ctp_pins_lcm_vmipi_output0>;
+	pinctrl-1 = <&ctp_pins_lcm_vmipi_output1>;
+	pinctrl-2 = <&ctp_pins_lcm_bias_output0>;
+	pinctrl-3 = <&ctp_pins_lcm_bias_output1>;
+	pinctrl-4 = <&mtkfb_pins_lcm_reset0>;
+	pinctrl-5 = <&mtkfb_pins_lcm_reset1>;
+	pinctrl-6 = <&mtkfb_pins_lcm_id0>;
+	pinctrl-7 = <&mtkfb_pins_lcm_id1>;
+	pinctrl-8 = <&mtkfb_pins_mode_te_gpio>;
+	pinctrl-9 = <&mtkfb_pins_mode_te_te>;
+	status = "okay";
+};
+
+&pio {
+	ctp_pins_lcm_vmipi_output0: state_lcm_vmipi_output0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	ctp_pins_lcm_vmipi_output1: state_lcm_vmipi_output1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	ctp_pins_lcm_bias_output0: state_lcm_bias_output0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	ctp_pins_lcm_bias_output1: state_lcm_bias_output1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	mtkfb_pins_lcm_reset0: state_lcm_rst_active {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+	mtkfb_pins_lcm_reset1: state_lcm_rst_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	mtkfb_pins_lcm_id0: state_lcm_id_active {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO24__FUNC_GPIO24>;
+			slew-rate = <1>;
+			bias-pull-up;
+		};
+	};
+	mtkfb_pins_lcm_id1: state_lcm_id_sleep {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO24__FUNC_GPIO24>;
+			slew-rate = <1>;
+			bias-pull-down;
+		};
+	};
+
+	mtkfb_pins_mode_te_gpio: mode_te_gpio {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO44__FUNC_GPIO44>;
+		};
+	};
+
+	mtkfb_pins_mode_te_te: mode_te_te {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO44__FUNC_DSI_TE>;
+		};
+	};
+};
+
+&odm {
+	kc_lcm: kc_lcm {
+		compatible = "kc,kc_lcm";
+	};
+};

@@ -1,0 +1,9 @@
+menuconfig USB_THERMAL
+	bool "Custom USB Thermal Configuration"
+	default y
+	depends on THERMAL
+	help
+	  This allows USB thermal.
+	  If USB temperature is high, interrupt will trigger and system will report abnormal.
+	  If you are not sure about this, set y
+

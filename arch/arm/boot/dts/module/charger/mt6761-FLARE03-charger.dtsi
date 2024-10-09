@@ -1,0 +1,126 @@
+/*
+ * This software is contributed or developed by KYOCERA Corporation.
+ * (C) 2022 KYOCERA Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&mt6370_pmu {
+        mt6370,intr_gpio_num = <11>; /* direct defined GPIO num */
+        mt6370,intr_gpio = <&pio 11 0x0>;
+};
+
+&mt6370_pmu {
+	charger {
+		cv = <4280000>;
+		ieoc = <100000>;
+		ircmp_resistor = <0>;
+		ircmp_vclamp = <0>;
+	};
+};
+
+&lk_charger {
+	/* charging current */
+	usb_charger_current = <500000>;
+	ac_charger_current = <900000>;
+	ac_charger_input_current = <1100000>;
+	non_std_ac_charger_current = <900000>;
+	charging_host_charger_current = <900000>;
+	pd_charger_current = <900000>;
+
+	/* battery temperature protection */
+	temp_t4_threshold = <50>;
+	temp_t3_threshold = <37>;
+	temp_t1_threshold = <3>;
+};
+
+&charger {
+	/* common */
+	battery_cv = <4280000>;
+	oem,batt-care-uv = <4200000>;
+
+	/* charging current */
+	usb_charger_current_suspend = <2500>;
+	usb_charger_current_unconfigured = <100000>;
+	usb_charger_current_configured = <500000>;
+	usb_charger_current = <500000>;
+	ac_charger_current = <900000>;
+	ac_charger_input_current = <1100000>;
+	non_std_ac_charger_current = <900000>;
+	charging_host_charger_current = <900000>;
+	oem_charging_current_limit_cc_30 = <900000>;
+	oem_input_current_limit_cc_30 = <1100000>;
+	oem_charging_current_limit_cc_15 = <900000>;
+	oem_input_current_limit_cc_15 = <1100000>;
+	oem_charging_current_limit_pd = <900000>;
+	oem_input_current_limit_pd = <1100000>;
+
+	/* sw jeita */
+	enable_sw_jeita;
+	jeita_temp_above_t4_cv = <4200000>;
+	jeita_temp_t3_to_t4_cv = <4200000>;
+	jeita_temp_t2_to_t3_cv = <4280000>;
+	jeita_temp_t1_to_t2_cv = <4280000>;
+	jeita_temp_t0_to_t1_cv = <4200000>;
+	jeita_temp_below_t0_cv = <4200000>;
+	temp_t4_thres = <50>;
+	temp_t4_thres_minus_x_degree = <47>;
+	temp_t3_thres = <42>;
+	temp_t3_thres_minus_x_degree = <39>;
+	temp_t2_thres = <15>;
+	temp_t2_thres_plus_x_degree = <18>;
+	temp_t1_thres = <10>;
+	temp_t1_thres_plus_x_degree = <13>;
+	temp_t0_thres = <3>;
+	temp_t0_thres_plus_x_degree = <5>;
+	temp_neg_10_thres = <0>;
+	oem_jeita_temp_t3_to_t4_cc = <500000>;
+	oem_jeita_temp_t2_to_t3_cc = <900000>;
+	oem_jeita_temp_t1_to_t2_cc = <900000>;
+	oem_jeita_temp_t0_to_t1_cc = <500000>;
+
+	/* battery temperature protection */
+	enable_min_charge_temp;
+	min_charge_temp = <3>;
+	min_charge_temp_plus_x_degree = <5>;
+	max_charge_temp = <50>;
+	max_charge_temp_minus_x_degree = <47>;
+
+	/* PD */
+	pd_vbus_upper_bound = <5000000>;
+
+	/* OEM Function */
+	oem_step_chg_config_hysteresis = <100>; /*100mV*/
+	/* VBAT_LOW VBAT_HIGH FCC */
+	oem_step_chg_config_fcc_above_temp_t2_thres = <3000 4280 900000>;
+	oem_step_chg_config_fcc_below_temp_t2_thres = <3000 4280 900000>;
+
+	oem,cycle-count-thresh = <0 200 500>;
+	oem,cycle-count-voltage-comp-mv = <0 0 0>;
+	oem,cont-chg-thresh = <0 52000 104000>;
+	oem,cont-chg-voltage-comp-mv = <0 0 0>;
+	oem,batt-temp-thresh = <(-1250) 300 320 360 380 400 420 440 460>;
+	oem,cont-chg-factor = <3 4 5 8 11 15 22 32 46>;
+
+	oem,usb_det-gpio = <&pio 1 0x00>;
+	oem,chg_pad_det-gpio = <&pio 0 0x00>;
+	oem_input_current_limit_chgpad = <1100000>;
+	oem_charging_current_limit_chgpad = <900000>;
+
+	oem,acc_det-gpio = <&pio 21 0x00>;
+	oem_input_current_limit_kcacc = <500000>;
+	oem_charging_current_limit_kcacc = <500000>;
+
+};
+
+&kc_offcharge {
+	type = "2\n";
+};
+
